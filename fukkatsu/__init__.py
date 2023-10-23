@@ -53,7 +53,7 @@ def resurrect(
                 track.warning(f"Input arguments: {input_args}\n")
                 track.warning(f"\nSource Code: \n {source}\n")
 
-                if trace in SHORT_TERM_MEMORY.keys() and active_memory == True:
+                if trace in SHORT_TERM_MEMORY.keys() and active_memory:
                     track.warning("Correction already in-memory\n")
                     suggested_code = SHORT_TERM_MEMORY[trace]
                     track.warning(
@@ -73,7 +73,7 @@ def resurrect(
                     track.warning(
                         f"Received INITIAL RAW suggestion:\n{suggested_code}\n"
                     )
-                    if active_twin == True:
+                    if active_twin:
                         track.warning("Requesting TWIN review\n")
                         suggested_code = twin(
                             inputs=input_args,
@@ -92,7 +92,7 @@ def resurrect(
                     )
 
                     import_block = extract_imports(suggested_code)
-                    if allow_installs == True:
+                    if allow_installs:
                         check_and_install_libraries(import_statements=import_block)
 
                     suggested_code = insert_string_after_colon(
@@ -133,11 +133,10 @@ def resurrect(
                             )
                             if decision == True:
                                 return output
-                            else:
-                                track.warning(
-                                    "Human rejected correction. Terminating\n"
-                                )
-                                break
+                            track.warning(
+                                "Human rejected correction. Terminating\n"
+                            )
+                            break
                         else:
                             return output
 
@@ -151,7 +150,7 @@ def resurrect(
                         trace = remove_trace_lines(trace)
                         track.warning("Reanimation failed, requesting new correction\n")
 
-                        if trace in SHORT_TERM_MEMORY.keys() and active_memory == True:
+                        if trace in SHORT_TERM_MEMORY.keys() and active_memory:
                             track.warning("Correction already in-memory\n")
                             suggested_code = SHORT_TERM_MEMORY[trace]
                             track.warning(
@@ -171,7 +170,7 @@ def resurrect(
                                 f"Received attempt RAW suggestion:\n{suggested_code}\n"
                             )
 
-                            if active_twin == True:
+                            if active_twin:
                                 track.warning("Requesting TWIN review\n")
                                 suggested_code = twin(
                                     inputs=input_args,
@@ -195,7 +194,7 @@ def resurrect(
                             )
 
                             import_block = extract_imports(suggested_code)
-                            if allow_installs == True:
+                            if allow_installs:
                                 check_and_install_libraries(
                                     import_statements=import_block
                                 )
@@ -245,7 +244,7 @@ def mutate(
             )
             track.warning(f"Received RAW suggestion mutation:\n{suggested_code}\n")
 
-            if active_twin == True:
+            if active_twin:
                 track.warning("Requesting TWIN review:\n")
                 suggested_code = twin(
                     inputs=input_args,
@@ -266,7 +265,7 @@ def mutate(
             local_dict = locals()
 
             import_block = extract_imports(suggested_code)
-            if allow_installs == True:
+            if allow_installs:
                 check_and_install_libraries(import_statements=import_block)
 
             suggested_code = insert_string_after_colon(suggested_code, import_block)
@@ -339,7 +338,7 @@ def stalk(
             )
             track.warning(f"Received RAW suggestion from Stalker:\n{suggested_code}\n")
 
-            if active_twin == True:
+            if active_twin:
                 track.warning("Requesting TWIN review:\n")
                 suggested_code = twin(
                     inputs=input_args,
@@ -360,7 +359,7 @@ def stalk(
             local_dict = locals()
 
             import_block = extract_imports(suggested_code)
-            if allow_installs == True:
+            if allow_installs:
                 check_and_install_libraries(import_statements=import_block)
 
             suggested_code = insert_string_after_colon(suggested_code, import_block)

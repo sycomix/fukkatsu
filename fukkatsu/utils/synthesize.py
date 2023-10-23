@@ -18,7 +18,7 @@ def defibrillate(
     additional_req: str = "",
     config: OpenaiChatCompletionConfig = None,
 ) -> str:
-    if additional_req == "":
+    if not additional_req:
         set_prompt = (
             f"{CONTEXT}\n\n{faulty_function}\n\nThe function received the following inputs:\n\n"
             f"{inputs}\n\nAnd returned the following error trace:\n\n{error_trace}\n\n{OUTPUT_CONSTRAINTS}"
@@ -31,9 +31,7 @@ def defibrillate(
         )
     track.warning(f"API REQUEST to {model_api}")
 
-    corrected_function = MODEL_API[model_api](set_prompt, **config)
-
-    return corrected_function
+    return MODEL_API[model_api](set_prompt, **config)
 
 
 def enhance(
@@ -50,9 +48,7 @@ def enhance(
 
     track.warning(f"API REQUEST to {model_api}")
 
-    mutated_function = MODEL_API[model_api](set_prompt, **config)
-
-    return mutated_function
+    return MODEL_API[model_api](set_prompt, **config)
 
 
 def twin(
@@ -67,9 +63,7 @@ def twin(
     )
 
     track.warning(f"API REQUEST to {model_api}")
-    mutated_function = MODEL_API[model_api](set_prompt, **config)
-
-    return mutated_function
+    return MODEL_API[model_api](set_prompt, **config)
 
 
 def stalker(
@@ -79,7 +73,7 @@ def stalker(
     additional_req: str = "",
     config: OpenaiChatCompletionConfig = None,
 ) -> str:
-    if additional_req == "":
+    if not additional_req:
         set_prompt = (
             f"{CONTEXT_STALKER}\n\n{function}\n\nThe function received the following inputs:\n\n"
             f"{inputs}\n\n{OUTPUT_CONSTRAINTS}\n"
@@ -91,6 +85,4 @@ def stalker(
             f"{ADDITIONAL}{additional_req}"
         )
     track.warning(f"API REQUEST to {model_api}")
-    corrected_function = MODEL_API[model_api](set_prompt, **config)
-
-    return corrected_function
+    return MODEL_API[model_api](set_prompt, **config)

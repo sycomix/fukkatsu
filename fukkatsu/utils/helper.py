@@ -12,14 +12,12 @@ from fukkatsu.observer.tracker import track
 
 def remove_trace_lines(trace_error: str) -> str:
     pattern = r"\b\w*line\s\d+\w*\b"
-    output_str = re.sub(pattern, "", trace_error)
-    return output_str
+    return re.sub(pattern, "", trace_error)
 
 
 def remove_wrapper_name(source_code: str) -> str:
     start_index = source_code.index("def")
-    source_code = source_code[start_index:]
-    return source_code
+    return source_code[start_index:]
 
 
 def standardize_delimiters(code_block: str) -> str:
@@ -29,12 +27,10 @@ def standardize_delimiters(code_block: str) -> str:
 
 def add_delimiters(message: str) -> str:
     message = message.rstrip()
-    if message.endswith("|||"):
-        return message
-    elif message.count("|||") == 2:
+    if message.endswith("|||") or message.count("|||") == 2:
         return message
     else:
-        return message + "|||"
+        return f"{message}|||"
 
 
 def extract_text_between_pipes(message: str) -> str:
@@ -48,15 +44,13 @@ def extract_text_between_pipes(message: str) -> str:
 
 
 def return_source_code(func: callable) -> str:
-    source = inspect.getsource(func)
-    return source
+    return inspect.getsource(func)
 
 
 def return_input_arguments(func: callable, *args, **kwargs) -> dict:
     signature = inspect.signature(func)
     bound_args = signature.bind(*args, **kwargs)
-    input_args = {k: bound_args.arguments[k] for k in signature.parameters.keys()}
-    return input_args
+    return {k: bound_args.arguments[k] for k in signature.parameters.keys()}
 
 
 def extract_imports(code_block: str) -> str:
@@ -84,8 +78,7 @@ def extract_imports(code_block: str) -> str:
             ]
             import_statements.extend(import_names)
 
-    import_block = "\n".join(["    " + statement for statement in import_statements])
-    return import_block
+    return "\n".join([f"    {statement}" for statement in import_statements])
 
 
 def insert_string_after_colon(function_string: str, string_to_insert: str) -> str:
@@ -138,22 +131,15 @@ def sampler(likelihood: float) -> bool:
     random_number = random.random()
     track.warning(f"Random number: {random_number}, Likelihood: {likelihood}")
 
-    if random_number < likelihood:
-        return True
-    else:
-        return False
+    return random_number < likelihood
 
 
 def rename_function(function_string: str, new_name: str) -> str:
     pattern = r"def\s+([a-zA-Z_]\w*)\s*\("
-    match = re.search(pattern, function_string)
-
-    if match:
-        renamed_function = re.sub(pattern, f"def {new_name}(", function_string)
-        return renamed_function
-    else:
-        track.warning(f"Could not rename function {function_string}")
-        return function_string
+    if match := re.search(pattern, function_string):
+        return re.sub(pattern, f"def {new_name}(", function_string)
+    track.warning(f"Could not rename function {function_string}")
+    return function_string
 
 
 def human_decision(prompt):

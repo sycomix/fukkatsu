@@ -60,10 +60,7 @@ def mock_generator(mock_values):
 def test_reanimate():
     @resurrect(lives=1)
     def my_function(x, y, z):
-        if y == 0:
-            return z
-        else:
-            return x / y + z
+        return z if y == 0 else x / y + z
 
     assert my_function(1, 2, 3) == 3.5
 

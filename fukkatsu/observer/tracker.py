@@ -26,9 +26,9 @@ class ColoredFormatter(logging.Formatter):
 
         if level == "INFO":
             message = COLORS["GREEN"] + message + COLORS["DEFAULT"]
-        elif level == "WARNING" or level == "DEBUG":
+        elif level in ["WARNING", "DEBUG"]:
             message = COLORS["DEFAULT"] + message + COLORS["DEFAULT"]
-        elif level == "ERROR" or level == "CRITICAL":
+        elif level in ["ERROR", "CRITICAL"]:
             message = COLORS["RED"] + message + COLORS["DEFAULT"]
 
         return message

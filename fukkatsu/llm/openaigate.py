@@ -57,6 +57,4 @@ def request_openai_model(
         temperature=temperature,
     )
 
-    final_resoponse = response["choices"][0]["message"]["content"].strip()
-
-    return final_resoponse
+    return response["choices"][0]["message"]["content"].strip()
